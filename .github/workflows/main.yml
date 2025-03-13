@@ -2,30 +2,30 @@ name: Deploy to Azure App Service
 on:
   push:
     branches:
-      - master
-
+      - main
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+ 
     steps: 
     - name: Checkout repository
       uses: actions/checkout@v2
-
+ 
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
         java-version: '11'
-    
     - name: Call Azure App Service
       env:
         SERVICE_URL: ${{ secrets.AZURE_SERVICE_URL }}
-        INPUT_VARIABLE: https://github.com/${{ github.repository }}.git
+        # INPUT_VARIABLE: https://github.com/${{ github.repository }}.git
+        INPUT_VARIABLE: https://${{ secrets.PAT }}@github.com/${{ github.repository }}.git
       run: |
-        echo "To be called"
+        echo "Running Tech Stack Governance Workflow"
         echo $INPUT_VARIABLE
         echo $SERVICE_URL?input=$INPUT_VARIABLE
         # curl -X GET "$SERVICE_URL?input=$INPUT_VARIABLE"
         wget -qO- "$SERVICE_URL?input=$INPUT_VARIABLE"
-        echo "called"
+        echo "Generated Response CHeck the Azure Blob Container."
